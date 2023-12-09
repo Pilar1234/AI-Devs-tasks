@@ -130,3 +130,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+/qdrant_storage
+/build
+
+*.iml
+.idea

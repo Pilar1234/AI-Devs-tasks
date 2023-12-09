@@ -1,0 +1,1 @@
+Various tasks that were done during AI Devs course
