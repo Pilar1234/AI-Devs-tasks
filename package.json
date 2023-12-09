@@ -1,0 +1,33 @@
+{
+  "name": "ai-devs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npm run build && node build/index.js",
+    "build": "rimraf ./build && tsc"
+  },
+  "dependencies": {
+    "@qdrant/js-client-rest": "^1.6.0",
+    "axios": "^1.6.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "fs-extra": "^11.1.1",
+    "http-errors": "~1.6.3",
+    "js-file-download": "^0.4.12",
+    "langchain": "^0.0.176",
+    "morgan": "~1.9.1",
+    "openai": "^4.14.1",
+    "pug": "^3.0.2",
+    "puppeteer": "^19.11.1",
+    "typescript": "^5.2.2",
+    "typescript-retry-decorator": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.9",
+    "nodemon": "^3.0.1",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.1"
+  }
+}

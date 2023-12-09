@@ -1,0 +1,271 @@
+{
+  "name": "[AI_Devs] Embedding",
+  "flow": [
+    {
+      "id": 1,
+      "module": "util:SetVariable2",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "name": "prompt",
+        "scope": "roundtrip",
+        "value": "Hello!"
+      },
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0,
+          "name": "Set Prompt"
+        },
+        "restore": {
+          "expect": {
+            "scope": {
+              "label": "One cycle"
+            }
+          }
+        },
+        "expect": [
+          {
+            "name": "name",
+            "type": "text",
+            "label": "Variable name",
+            "required": true
+          },
+          {
+            "name": "scope",
+            "type": "select",
+            "label": "Variable lifetime",
+            "required": true,
+            "validate": {
+              "enum": [
+                "roundtrip",
+                "execution"
+              ]
+            }
+          },
+          {
+            "name": "value",
+            "type": "any",
+            "label": "Variable value"
+          }
+        ],
+        "interface": [
+          {
+            "name": "prompt",
+            "label": "prompt",
+            "type": "any"
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "module": "json:CreateJSON",
+      "version": 1,
+      "parameters": {
+        "type": 132114,
+        "space": ""
+      },
+      "mapper": {
+        "model": "text-embedding-ada-002",
+        "input": "{{1.prompt}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 300,
+          "y": 0
+        },
+        "restore": {
+          "parameters": {
+            "type": {
+              "label": "AI_Devs Embedding"
+            },
+            "space": {
+              "label": "Empty"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "type",
+            "type": "udt",
+            "label": "Data structure",
+            "required": true
+          },
+          {
+            "name": "space",
+            "type": "select",
+            "label": "Indentation",
+            "validate": {
+              "enum": [
+                "tab",
+                "2",
+                "4"
+              ]
+            }
+          }
+        ],
+        "expect": [
+          {
+            "name": "model",
+            "type": "text",
+            "label": "Model"
+          },
+          {
+            "name": "input",
+            "type": "text",
+            "label": "Input"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "module": "openai-gpt-3:makeApiCall",
+      "version": 1,
+      "parameters": {
+        "__IMTCONN__": 2054683
+      },
+      "mapper": {
+        "url": "/v1/embeddings",
+        "method": "POST",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": "{{3.json}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 600,
+          "y": 0,
+          "name": "Generate embedding"
+        },
+        "restore": {
+          "parameters": {
+            "__IMTCONN__": {
+              "label": "OpenAI",
+              "data": {
+                "scoped": "true",
+                "connection": "openai-gpt-3"
+              }
+            }
+          },
+          "expect": {
+            "method": {
+              "mode": "chose",
+              "label": "POST"
+            },
+            "headers": {
+              "mode": "chose",
+              "items": [
+                null
+              ]
+            },
+            "qs": {
+              "mode": "chose"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "__IMTCONN__",
+            "type": "account:openai-gpt-3",
+            "label": "Connection",
+            "required": true
+          }
+        ],
+        "expect": [
+          {
+            "name": "url",
+            "type": "text",
+            "label": "URL",
+            "required": true
+          },
+          {
+            "name": "method",
+            "type": "select",
+            "label": "Method",
+            "required": true,
+            "validate": {
+              "enum": [
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE"
+              ]
+            }
+          },
+          {
+            "name": "headers",
+            "type": "array",
+            "label": "Headers",
+            "spec": [
+              {
+                "name": "key",
+                "type": "text",
+                "label": "Key"
+              },
+              {
+                "name": "value",
+                "type": "text",
+                "label": "Value"
+              }
+            ]
+          },
+          {
+            "name": "qs",
+            "type": "array",
+            "label": "Query String",
+            "spec": [
+              {
+                "name": "key",
+                "type": "text",
+                "label": "Key"
+              },
+              {
+                "name": "value",
+                "type": "text",
+                "label": "Value"
+              }
+            ]
+          },
+          {
+            "name": "body",
+            "type": "any",
+            "label": "Body"
+          }
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false,
+      "freshVariables": false
+    },
+    "designer": {
+      "orphans": [],
+      "notes": [
+        {
+          "id": 3,
+          "text": "{\"input\":\"Hello!\",\"model\":\"text-embedding-ada-002\"}",
+          "filter": false
+        }
+      ]
+    },
+    "zone": "eu1.make.com"
+  }
+}
